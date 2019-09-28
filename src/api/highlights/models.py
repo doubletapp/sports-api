@@ -6,3 +6,6 @@ class Highlight(models.Model):
     video = models.FileField(null=False, blank=False)
     match = models.ForeignKey('api.Match', null=False, blank=False, on_delete=models.CASCADE)
     fragments = models.ManyToManyField('api.Video')
+
+    def __str__(self):
+        return f'{self.match.home_team.name} - {self.match.away_team.name}'
