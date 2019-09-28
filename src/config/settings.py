@@ -144,6 +144,8 @@ DATABASES = {
     }
 }
 
+MEDIA_HOST = 'http://sports.doubletapp.ru'
+
 try:
     from .local_settings import *
 except ImportError:

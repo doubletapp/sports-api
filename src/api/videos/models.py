@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Video(models.Model):
@@ -8,6 +9,9 @@ class Video(models.Model):
     user_id = models.CharField(max_length=255, blank=False, null=False)
     start_real_time = models.DateTimeField(null=False, blank=False)
     duration = models.FloatField(null=False, blank=False)
+    liked_by = ArrayField(
+        models.CharField(max_length=255, null=False, blank=False)
+    )
 
     def __str__(self):
         return f'{self.user_id} - {self.start_real_time}'
