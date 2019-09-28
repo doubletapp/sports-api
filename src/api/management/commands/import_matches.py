@@ -74,6 +74,9 @@ base_query = '''
 class Command(BaseCommand):
     def handle(self, *args, **options):
         # Event.objects.all().delete()
+        # Match.objects.all().delete()
+        # return
+
         client = GraphQLClient('https://vk-hackathon-gateway.trbna.com/ru/graphql/')
 
         for match_id in match_ids:
@@ -96,6 +99,7 @@ class Command(BaseCommand):
                     logo = home_team_data.get('team', {}).get('logo').get('url'),
                 )
             )
+
             away_team, created = Team.objects.update_or_create(
                 global_id=away_team_data.get('team', {}).get('id'),
                 defaults=dict(
@@ -103,15 +107,15 @@ class Command(BaseCommand):
                     logo = away_team_data.get('team', {}).get('logo').get('url'),
                 )
             )
-            print(home_team)
+
             match, created = Match.objects.update_or_create(
                 global_id=match_id,
                 defaults=dict(
                     start_datetime=start_time, status=status, minute=minute,
                     home_team_score = home_team_data.get('score'),
                     away_team_score = away_team_data.get('score'),
-                    home_team_id=home_team,
-                    away_team_id=away_team
+                    home_team=home_team,
+                    away_team=away_team
                 )
             )
 
