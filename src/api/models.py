@@ -8,3 +8,4 @@ from api.matches.models import *
 from api.teams.models import *
 from api.videos.models import *
 from api.highlights.models import *
+from api.events.models import *
