@@ -36,7 +36,12 @@ def serialize_hightlights(highlights):
 
 class HighlightsView(View):
     def get(self, request):
-        highlights = Highlight.objects.all().prefetch_related('fragments', 'match', 'match__home_team', 'match__away_team')
+        params = {}
+        match_id = request.GET.get('match', None)
+        if match_id is not None:
+            params['match_id'] = match_id
+
+        highlights = Highlight.objects.filter(**params).prefetch_related('fragments', 'match', 'match__home_team', 'match__away_team')
         return JsonResponse({
             'highlights': serialize_hightlights(highlights)
         }, status=200)
