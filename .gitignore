@@ -2,7 +2,6 @@
 /venv/
 /src/static/
 /src/media/
-/src/videos/
 local_settings.py
 __pycache__
 *.pyc
