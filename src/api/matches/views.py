@@ -22,14 +22,20 @@ def serialize_matches(matches):
         ),
         status=match.status,
         minute=match.minute,
-        # events=[
-        #     {
-        #         id=Int,
-        #         type=EventType,
-        #         real_time=Date,
-        #         match_time=Date
-        #     }
-        # ]
+        events=[dict(
+            id=event.id,
+            type=event.type,
+            real_time=event.time,
+            match_time=event.match_time,
+            team=event.team,
+            player=dict(
+                last_name=event.player_name,
+                avatar=event.player_avatar,
+            ),
+            home_score=event.home_score,
+            away_score=event.away_score,
+            method_score=event.method_score,
+        ) for event in match.events.all()]
     ) for match in matches]
 
 
