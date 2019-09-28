@@ -9,4 +9,4 @@ class Video(models.Model):
     start_real_time = models.DateTimeField(null=False, blank=False)
 
     def __str__(self):
-        return f'{self.home_team.name} - {self.away_team.name}'
+        return f'{self.user_id} - {self.start_real_time}'
