@@ -21,8 +21,11 @@ class VideosView(View):
     def get(self, request):
         params={}
         match_id = request.GET.get('match', None)
+        user_id = request.GET.get('user', None)
         if match_id is not None:
             params['match_id']=match_id
+        if user_id is not None:
+            params['user_id']=user_id
 
         videos = Video.objects.filter(**params)
         return JsonResponse({
