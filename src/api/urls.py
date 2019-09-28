@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from api.auth.views import LoginView, SignupView, ChangePasswordView, SendResetPasswordEmailView, ResetPasswordView
 from api.matches.views import MatchesView
-from api.videos.views import VideosView
+from api.videos.views import VideosView, LikeVideoView
 from api.highlights.views import HighlightsView
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
     path('reset_password/', ResetPasswordView.as_view()),
     path('matches/', MatchesView.as_view()),
     path('videos/', VideosView.as_view()),
+    path('videos/<int:id>/like/', LikeVideoView.as_view()),
     path('highlights/', HighlightsView.as_view()),
 ]

@@ -5,13 +5,15 @@ from django.conf import settings
 from .models import Video
 
 
-def serialize_videos(videos):
+def serialize_videos(videos, user_id):
     return [dict(
         id=video.id,
         preview_url=f'{settings.MEDIA_HOST}{video.preview.url}',
         video_url=f'{settings.MEDIA_HOST}{video.video.url}',
         match_id=video.match_id,
         user_id=video.user_id,
+        is_liked=user_id in video.liked_by,
+        likes_count=len(video.liked_by),
     ) for video in videos]
 
 
@@ -19,7 +21,7 @@ class VideosView(View):
     def get(self, request):
         videos = Video.objects.all()
         return JsonResponse({
-            'videos': serialize_videos(videos)
+            'videos': serialize_videos(videos, request.user_id)
         }, status=200)
 
     def post(self, request):
@@ -43,3 +45,15 @@ class VideosView(View):
             'success': True
         }, status=200)
 
+
+class LikeVideoView(View):
+    def post(self, request, id):
+        video = Video.objects.get(id=id)
+        liked_by = set(video.liked_by)
+        liked_by.add(request.user_id)
+        video.liked_by = list(liked_by)
+        video.save()
+
+        return JsonResponse({
+            'success': True
+        }, status=200)
