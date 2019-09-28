@@ -12,13 +12,13 @@ def serialize_matches(matches):
             id=match.home_team.id,
             logo=match.home_team.logo,
             name=match.home_team.name,
-            # score=Int
+            score=match.home_team_score
         ),
         away_team=dict(
-            id=match.home_team.id,
-            logo=match.home_team.logo,
-            name=match.home_team.name,
-            # score=Int
+            id=match.away_team.id,
+            logo=match.away_team.logo,
+            name=match.away_team.name,
+            score=match.away_team_score
         ),
         status=match.status,
         minute=match.minute,
