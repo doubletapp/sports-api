@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
+from django.conf import settings
 
 from .models import Highlight, HighlightFragment
 
@@ -7,8 +8,8 @@ from .models import Highlight, HighlightFragment
 def serialize_hightlights(highlights):
     return [dict(
         id=highlight.id,
-        preview_url=highlight.preview.url,
-        video_url=highlight.video.url,
+        preview_url=f'{settings.MEDIA_HOST}{highlight.preview.url}',
+        video_url=f'{settings.MEDIA_HOST}{highlight.video.url}',
         match=dict(
             id=highlight.match.id,
             start_datetime=highlight.match.start_datetime,
@@ -16,13 +17,13 @@ def serialize_hightlights(highlights):
                 id=highlight.match.home_team.id,
                 logo=highlight.match.home_team.logo,
                 name=highlight.match.home_team.name,
-                # score=Int
+                score=highlight.match.home_team_score,
             ),
             away_team=dict(
                 id=highlight.match.away_team.id,
                 logo=highlight.match.away_team.logo,
                 name=highlight.match.away_team.name,
-                # score=Int
+                score=highlight.match.away_team_score,
             ),
         ),
         fragments=[dict(
