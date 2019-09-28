@@ -8,3 +8,4 @@ from api.matches.admin import MatchAdmin
 from api.teams.admin import TeamAdmin
 from api.videos.admin import VideoAdmin
 from api.highlights.admin import HighlightAdmin
+from api.events.admin import EventAdmin
