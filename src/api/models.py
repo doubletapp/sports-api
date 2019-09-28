@@ -7,3 +7,4 @@ from django.db import models
 from api.matches.models import Match
 from api.teams.models import Team
 from api.videos.models import Video
+from api.highlights.models import Highlight
