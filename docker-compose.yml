@@ -30,6 +30,7 @@ services:
       - swagger
     volumes:
       - static_volume:/app/src/static/
+      - media_volume:/app/src/media/
 
   swagger:
     build: ./swagger
