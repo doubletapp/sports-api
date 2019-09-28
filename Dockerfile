@@ -16,7 +16,8 @@ RUN set -ex \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
         gdal-dev \
-        geos-dev
+        geos-dev \
+        ffmpeg
 
 COPY requirements.txt /app/
 RUN cd /app/ && \
