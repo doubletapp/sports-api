@@ -16,7 +16,7 @@ services:
     restart: always
     volumes:
       - static_volume:/app/src/static/
-      - media_volume_1:/app/src/media/
+      - videos_volume:/app/src/videos/
     depends_on:
       - db
 
@@ -30,7 +30,7 @@ services:
       - swagger
     volumes:
       - static_volume:/app/src/static/
-      - media_volume_1:/app/src/media/
+      - videos_volume:/app/src/videos/
 
   swagger:
     build: ./swagger
@@ -39,4 +39,4 @@ services:
 volumes:
   db_volume:
   static_volume:
-  media_volume_1:
+  videos_volume:
