@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views import View
 
-from .models import Highlight
+from .models import Highlight, HighlightFragment
 
 
 def serialize_hightlights(highlights):
@@ -27,7 +27,7 @@ def serialize_hightlights(highlights):
         ),
         fragments=[dict(
             video_id=fragment.id,
-            start_time=0, # TODO
+            start_time=HighlightFragment.objects.get(highlight=highlight, video=fragment).second,
             user_id=fragment.user_id,
         ) for fragment in highlight.fragments.all()],
     ) for highlight in highlights]

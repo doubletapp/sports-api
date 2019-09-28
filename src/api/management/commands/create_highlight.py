@@ -39,4 +39,5 @@ class Command(BaseCommand):
             match_id=match_id,
         )
         highlight.save()
-        highlight.fragments.set(videos)
+        for video in videos:
+            highlight.fragments.add(video, through_defaults=dict(second=0))
