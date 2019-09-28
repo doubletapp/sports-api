@@ -19,7 +19,12 @@ def serialize_videos(videos, user_id):
 
 class VideosView(View):
     def get(self, request):
-        videos = Video.objects.all()
+        params={}
+        match_id = request.GET.get('match', None)
+        if match_id is not None:
+            params['match_id']=match_id
+
+        videos = Video.objects.filter(**params)
         return JsonResponse({
             'videos': serialize_videos(videos, request.user_id)
         }, status=200)
