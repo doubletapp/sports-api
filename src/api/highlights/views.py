@@ -27,7 +27,7 @@ def serialize_hightlights(highlights):
         ),
         fragments=[dict(
             video_id=fragment.id,
-            start_time=HighlightFragment.objects.get(highlight=highlight, video=fragment).second,
+            start_time=HighlightFragment.objects.get(highlight=highlight, video=fragment).start_time,
             user_id=fragment.user_id,
         ) for fragment in highlight.fragments.all()],
     ) for highlight in highlights]

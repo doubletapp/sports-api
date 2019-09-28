@@ -39,5 +39,8 @@ class Command(BaseCommand):
             match_id=match_id,
         )
         highlight.save()
+        
+        current_time = 0
         for video in videos:
-            highlight.fragments.add(video, through_defaults=dict(second=0))
+            highlight.fragments.add(video, through_defaults=dict(start_time=current_time))
+            current_time += video.duration
