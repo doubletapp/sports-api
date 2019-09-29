@@ -2,7 +2,8 @@ from django.http import JsonResponse
 from django.views import View
 from django.conf import settings
 
-from .models import Highlight, HighlightFragment
+from .models import Highlight, HighlightFragment, HighlightEvent
+from api.events.models import Event
 
 
 def serialize_hightlights(highlights):
@@ -26,11 +27,29 @@ def serialize_hightlights(highlights):
                 score=highlight.match.away_team_score,
             ),
         ),
-        fragments=[dict(
-            video_id=fragment.id,
-            start_time=HighlightFragment.objects.get(highlight=highlight, video=fragment).start_time,
-            user_id=fragment.user_id,
-        ) for fragment in highlight.fragments.all()],
+        # fragments=[dict(
+        #     video_id=fragment.id,
+        #     start_time=HighlightFragment.objects.get(highlight=highlight, video=fragment).start_time,
+        #     user_id=fragment.user_id,
+        # ) for fragment in highlight.fragments.all()],
+        fragments=[],
+        events=[dict(
+            id=event.id,
+            type=event.type,
+            real_time=event.time,
+            match_time=event.match_time,
+            video_time=HighlightEvent.objects.get(highlight=highlight, event=event).start_shift,
+            team=event.team,
+            player=dict(
+                last_name=event.player_name,
+                avatar=event.player_avatar,
+            ),
+            home_score=event.home_score,
+            away_score=event.away_score,
+            method_score=event.method_score,
+        ) for event in Event.objects.filter(
+            id__in=HighlightEvent.objects.filter(highlight=highlight).values_list('event', flat=True)
+        ).order_by('time')]
     ) for highlight in highlights]
 
 

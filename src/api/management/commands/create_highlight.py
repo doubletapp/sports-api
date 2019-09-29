@@ -26,7 +26,7 @@ class Command(BaseCommand):
         # match_id = 9
         print(f'creating highlight for match {match_id}...')
         
-        match_videos = Video.objects.filter(match_id=match_id)
+        match_videos = Video.objects.filter(match_id=match_id).order_by('start_real_time')
 
         before_shift=8
         after_shift=12
@@ -59,10 +59,6 @@ class Command(BaseCommand):
                     end=he['end'],
                 ))
 
-
-
-
-
         highlight_file = self.concat_videos(videos)
         highlight = Highlight(
             preview=match_videos[0].preview,
@@ -70,6 +66,20 @@ class Command(BaseCommand):
             match_id=match_id,
         )
         highlight.save()
+
+
+        current_start_shift = 0
+        for key, value in hightlight_events.items():
+            hev=HighlightEvent(
+                event_id=key,
+                highlight=highlight,
+                start_shift=current_start_shift
+            )
+            hev.save()
+            for he in value:
+                amount = he['end']-he['start']
+                current_start_shift += amount
+            
         #
         # current_time = 0
         # for video in videos:
