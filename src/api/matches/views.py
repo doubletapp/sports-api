@@ -45,13 +45,20 @@ def serialize_matches(matches):
             ) for video in Video.objects.filter(
                 id__in=VideoEvent.objects.filter(event=event).values_list('video', flat=True)
             )]
-        ) for event in match.events.all()]
+        ) for event in match.events.all().order_by('-time')],
+        other_videos=[dict(
+            id=video.id,
+            preview_url=f'{settings.MEDIA_HOST}{video.preview.url}',
+            video_url=f'{settings.MEDIA_HOST}{video.video.url}',
+        ) for video in Video.objects.filter(match=match).exclude(
+            id__in=VideoEvent.objects.all().values_list('video', flat=True)
+        )],
     ) for match in matches]
 
 
 class MatchesView(View):
     def get(self, request):
-        matches = Match.objects.all()
+        matches = Match.objects.all().order_by('start_datetime')
         return JsonResponse({
             'matches': serialize_matches(matches)
         }, status=200)
