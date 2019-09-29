@@ -5,7 +5,7 @@ from django.conf import settings
 
 from api.videos.models import Video
 from api.highlights.models import Highlight
-from api.ffmpeg import concat_videos
+from api.ffmpeg import concat_videos, cut_video
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
@@ -14,7 +14,8 @@ class Command(BaseCommand):
     def concat_videos(self, videos):
         input_video_paths = []
         for video in videos:
-            input_video_paths.append(video.video.path)
+            path = cut_video(video.video.path, 10, 20, uuid.uuid4().hex)
+            input_video_paths.append(path)
 
         highlight_name = uuid.uuid4().hex
 
