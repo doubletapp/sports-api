@@ -11,7 +11,7 @@ def concat_videos(video_paths, output_name):
     concat_input = '|'.join([f'{settings.MEDIA_ROOT}/{video_name}.ts' for video_name in video_names])
     os.system(f'ffmpeg -i "concat:{concat_input}" -c copy -bsf:a aac_adtstoasc {settings.MEDIA_ROOT}/{output_name}.mp4 -y')
     
-    return f'{settings.MEDIA_ROOT}/{output_name}.mp4'
+    return f'{output_name}.mp4'
 
 
 def cut_video(video_path, start_shift, end_shift, output_name):
