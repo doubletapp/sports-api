@@ -8,7 +8,7 @@ import json
 event_types = [
     dict(code='corner_kick', model='statCornerKick'),
     dict(code='free_kick', model='statFreeKick'),
-    dict(code='goal_kick', model='statGoalKick'),
+    # dict(code='goal_kick', model='statGoalKick'),
     dict(code='match_started', model='statMatchStarted'),
     dict(code='offside', model='statOffside'),
     dict(code='penalty_awarded', model='statPenaltyAwarded'),

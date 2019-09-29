@@ -25,4 +25,4 @@ class VideoEvent(models.Model):
     time_shift = models.FloatField(null=False, blank=False)
 
     def __str__(self):
-        return f'{self.event.type}, {self.time_shift}'
+        return f'{self.event.type}, {self.event.time}, {self.time_shift}'

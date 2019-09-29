@@ -48,7 +48,7 @@ class VideosView(View):
             match_id=match_id,
             user_id=request.user_id,
             start_real_time=start_real_time,
-            duration=int(duration),
+            duration=duration,
         )
         video.save()
 

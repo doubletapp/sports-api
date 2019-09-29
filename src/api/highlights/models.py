@@ -15,3 +15,9 @@ class HighlightFragment(models.Model):
     highlight = models.ForeignKey('api.Highlight', null=False, blank=False, on_delete=models.CASCADE)
     video = models.ForeignKey('api.Video', null=False, blank=False, on_delete=models.CASCADE)
     start_time = models.FloatField(null=False, blank=False)
+
+
+class HighlightEvent(models.Model):
+    highlight = models.ForeignKey('api.Highlight', null=False, blank=False, on_delete=models.CASCADE)
+    event = models.ForeignKey('api.Event', null=False, blank=False, on_delete=models.CASCADE)
+    start_shift = models.FloatField(null=False, blank=False)
