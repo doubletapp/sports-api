@@ -1,7 +1,10 @@
 from django.http import JsonResponse
 from django.views import View
+from django.conf import settings
 
 from .models import Match
+
+from api.videos.models import Video, VideoEvent
 
 
 def serialize_matches(matches):
@@ -35,6 +38,13 @@ def serialize_matches(matches):
             home_score=event.home_score,
             away_score=event.away_score,
             method_score=event.method_score,
+            videos=[dict(
+                id=video.id,
+                preview_url=f'{settings.MEDIA_HOST}{video.preview.url}',
+                video_url=f'{settings.MEDIA_HOST}{video.video.url}',
+            ) for video in Video.objects.filter(
+                id__in=VideoEvent.objects.filter(event=event).values_list('video', flat=True)
+            )]
         ) for event in match.events.all()]
     ) for match in matches]
 
