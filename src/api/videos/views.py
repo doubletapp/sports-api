@@ -1,8 +1,11 @@
+import datetime
+
 from django.http import JsonResponse
 from django.views import View
 from django.conf import settings
 
-from .models import Video
+from api.events.models import Event
+from .models import Video, VideoEvent
 
 
 def serialize_videos(videos, user_id):
@@ -45,9 +48,22 @@ class VideosView(View):
             match_id=match_id,
             user_id=request.user_id,
             start_real_time=start_real_time,
-            duration=duration,
+            duration=int(duration),
         )
         video.save()
+
+        video = Video.objects.get(id=video.id)
+
+        end_real_time=video.start_real_time + datetime.timedelta(seconds=video.duration)
+        for event in Event.objects.filter(match_id=video.match_id, time__gt=video.start_real_time, time__lt=end_real_time):
+            time_shift=event.time-video.start_real_time
+            video_event = VideoEvent(
+                event=event,
+                video=video,
+                time_shift=time_shift.total_seconds(),
+            )
+            video_event.save()
+
 
         return JsonResponse({
             'success': True

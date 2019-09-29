@@ -1,6 +1,5 @@
 from django.db import models
 from api.events.enums import TeamType
-from api.events.enums import MethodScoreType
 
 class Event(models.Model):
     global_id = models.CharField(max_length=255, null=False, blank=False)
@@ -15,8 +14,13 @@ class Event(models.Model):
     away_score = models.IntegerField(null=True)
     player_name = models.CharField(max_length=255, null=True)
     player_avatar = models.CharField(max_length=255, null=True)
-    # method_score = models.CharField(max_length=255, null=True, choices=MethodScoreType.choices())
     method_score = models.CharField(max_length=255, null=True)
+
+    def time_seconds(self):
+        return self.time.strftime("%d %b %Y %H:%M:%S")
+
+    def time_format(self):
+        return self.time.strftime("%Y-%m-%d-%H-%M-%S")
 
     def __str__(self):
         return f'{self.type}'
