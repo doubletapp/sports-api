@@ -6,6 +6,7 @@ from api.events.models import Event
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        Event.objects.all().delete()
-        Team.objects.all().delete()
-        Match.objects.all().delete()
+        # Event.objects.all().delete()
+        # Team.objects.all().delete()
+        # Match.objects.all().delete()
+        Event.objects.filter(type='goal_kick').delete()
