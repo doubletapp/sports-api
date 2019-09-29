@@ -5,26 +5,20 @@ from django.conf import settings
 
 from api.videos.models import Video
 from api.highlights.models import Highlight
+from api.ffmpeg import concat_videos
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('match_id', type=int)
 
-    def concat_videos(self, *videos):
-        input_videos = []
+    def concat_videos(self, videos):
+        input_video_paths = []
         for video in videos:
-            input_videos.append(ffmpeg.input(video.video.path))
+            input_video_paths.append(video.video.path)
 
         highlight_name = uuid.uuid4().hex
 
-        (
-            ffmpeg
-            .concat(*input_videos)
-            .output(f'{settings.MEDIA_ROOT}/{highlight_name}.mp4')
-            .run()
-        )
-
-        return f'{highlight_name}.mp4'
+        return concat_videos(input_video_paths, highlight_name)
 
     def handle(self, *args, **options):
         match_id = options.get('match_id', None)
@@ -32,7 +26,7 @@ class Command(BaseCommand):
         
         videos = Video.objects.filter(match_id=match_id)
         
-        highlight_file = self.concat_videos(*videos)
+        highlight_file = self.concat_videos(videos)
         highlight = Highlight(
             preview=videos[0].preview,
             video=highlight_file,

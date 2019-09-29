@@ -36,9 +36,31 @@ server {
 }
 ```
 
-## concat files ffmpeg (fast way)
+## ffmpeg
+
+### cut video
+example bash:
 ```
-ffmpeg -i input1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate1.ts
-ffmpeg -i input2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate2.ts
-ffmpeg -i "concat:intermediate1.ts|intermediate2.ts" -c copy -bsf:a aac_adtstoasc output.mp4
+ffmpeg -ss 10.123 -i input1.mp4 -to 10.454 -c copy output.mp4 -y
+```
+
+example code:
+```
+f'ffmpeg -ss {start_fragment_shift} -i input1.mp4 -to {fragment_duration} -c copy {fragment_name}.mp4 -y'
+```
+
+### concat videos ffmpeg
+example bash:
+```
+ffmpeg -i input1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts input1.ts -y
+ffmpeg -i input2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts input2.ts -y
+ffmpeg -i "concat:input1.ts|input2.ts" -c copy -bsf:a aac_adtstoasc output.mp4 -y
+```
+
+example code:
+```
+f'ffmpeg -i {fragment_1_name}.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts {fragment_1_name}.ts -y'
+f'ffmpeg -i {fragment_2_name}.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts {fragment_2_name}.ts -y'
+f'ffmpeg -i {fragment_n_name}.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts {fragment_n_name}.ts -y'
+f'ffmpeg -i "concat:{fragment_1_name}.ts|{fragment_2_name}.ts|{fragment_n_name}.ts" -c copy -bsf:a aac_adtstoasc {highlight_name}.mp4 -y'
 ```
